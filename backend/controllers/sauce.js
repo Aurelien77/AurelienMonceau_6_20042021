@@ -56,7 +56,7 @@ exports.deleteSauce = (req, res, next) => {
 };
 exports.getOneSauce = (req, res, next) => {
   Sauce.findOne({ _id: req.params.id })
-    .then((Sauce) => res.status(201).json({ Sauce }))
+    .then((Sauce) => res.status(201).json(Sauce))
     .catch((error) => res.status(404).json({ error }));
 };
 exports.getAllSauces = (req, res, next) => {
