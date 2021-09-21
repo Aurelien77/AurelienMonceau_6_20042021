@@ -29,10 +29,11 @@ app.use((req, res, next) => {
   );
   next();
 });
+
 app.use(bodyParser.json()); // bodyParser est utilisé par tous les endpoints ?
 
-app.use("images", express.static(path.join(__dirname, "images")));
-app.use("/api/sauces", sauceRoutes); // Ou se trouve exactement cette partie ?
+app.use("/images", express.static(path.join(__dirname, "images")));
+app.use("/api/sauces", sauceRoutes); // Constante
 app.use("/api/auth", userRoutes);
 
 module.exports = app;
