@@ -1,19 +1,21 @@
 const Sauce = require("../models/Sauce");
 
-const fs = require("fs");
+const fs = require("fs"); // ???
 
 exports.createSauce = (req, res, next) => {
   const sauceObject = JSON.parse(req.body.sauce);
   delete sauceObject._id;
   const sauce = new Sauce({
-    ...sauceObject,
+    //l'on se base sur le modèle
+    ...sauceObject, // trois points ?
     imageUrl: `${req.protocol}://${req.get("host")}/images/${
+      // les images
       req.file.filename
     }`,
-    likes: 0,
-    dislikes: 0,
-    usersLiked: [],
-    usersDisliked: [],
+    likes: 0, // une ligne like à 0
+    dislikes: 0, // une ligne dislike à 0
+    usersLiked: [], // un tableau usersLiked vide
+    usersDisliked: [], // un tableau usersDisLiked vide
   });
   console.log(req.body);
   sauce
@@ -29,6 +31,7 @@ exports.createSauce = (req, res, next) => {
 
 exports.modifySauce = (req, res, next) => {
   const sauce = new Sauce({
+    //l'on se base sur le modèle
     ...req.body,
   });
   Sauce.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
@@ -39,7 +42,7 @@ exports.modifySauce = (req, res, next) => {
 };
 
 exports.deleteSauce = (req, res, next) => {
-  Sauce.findOne({ _id: req.params.id })
+  Sauce.findOne({ _id: req.params.id }) //l'on se base sur le modèle
     .then((sauce) => {
       const filename = sauce.imageUrl.split("/image/")[1];
       fs.unlink(`images/${filename}`, () => {
@@ -55,7 +58,7 @@ exports.deleteSauce = (req, res, next) => {
     .catch((error) => res.status(500).json({ error }));
 };
 exports.getOneSauce = (req, res, next) => {
-  Sauce.findOne({ _id: req.params.id })
+  Sauce.findOne({ _id: req.params.id }) //l'on se base sur le modèle
     .then((Sauce) => res.status(201).json(Sauce))
     .catch((error) => res.status(404).json({ error }));
 };
