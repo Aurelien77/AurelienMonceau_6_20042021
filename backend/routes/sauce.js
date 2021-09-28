@@ -5,6 +5,7 @@ const auth = require("../middleware/auth"); // securité ?
 const multer = require("../middleware/multer-config"); //envoi de fichier
 const sauceCtrl = require("../controllers/sauce");
 router.post("/", auth, multer, sauceCtrl.createSauce); //endpoint
+router.post("/:id/like", auth, sauceCtrl.addLike);
 router.get("/", auth, sauceCtrl.getAllSauces); //endpoint
 router.get("/:id", auth, sauceCtrl.getOneSauce); //endpoint
 router.put("/:id", auth, multer, sauceCtrl.modifySauce); //endpoint

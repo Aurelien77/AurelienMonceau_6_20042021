@@ -68,6 +68,82 @@ exports.getAllSauces = (req, res, next) => {
     .catch((error) => res.status(400).json({ error }));
 };
 
+exports.addLike = (req, res, next) => {
+  Sauce.findOne({ _id: req.params.id })
+    .then((sauce) => {
+      switch (req.body.like) {
+        case 1: //swith permet de définir des cas
+          if (!sauce.usersLiked.includes(req.body.userId)) {
+            //Si l'utilisateur n'est pas présent dans le tableau usersLiked
+            //ajouterlike 1, push userId dans le tableau des usersLiked //
+            Sauce.updateOne(
+              { _id: req.params.id },
+              {
+                $inc: { likes: 1 },
+                $push: { usersLiked: req.body.userId },
+                _id: req.params.id,
+              }
+            )
+              .then(() => res.status(210).json({ message: "j'aime" }))
+              .catch((error) => res.status(400).json({ error }));
+          }
+          break;
+
+        case -1: //l'utilisateur disliked la sauce
+          if (!sauce.usersDisliked.includes(req.body.userId)) {
+            //si user id ne se trouve pas dans le tableau usersDisliked
+            // ajouter 1, puis push userId dans le tableau usersDisliked //
+            Sauce.updateOne(
+              { _id: req.params.id },
+              {
+                $inc: { dislikes: 1 },
+                $push: { usersDisliked: req.body.userId },
+                _id: req.params.id,
+              }
+            )
+              .then(() => res.status(210).json({ message: "Je n'aime pas" }))
+              .catch((error) => res.status(400).json({ error }));
+          }
+          break;
+        case 0: //Retirer like et dislike
+          if (sauce.usersLiked.includes(req.body.userId)) {
+            //Si userID est présent dans le tableau usersLiked
+            // likes -1 , retirer userId du tableau //
+            Sauce.updateOne(
+              { _id: req.params.id },
+              {
+                $inc: { likes: -1 },
+                $pull: { usersLiked: req.body.userId },
+                _id: req.params.id,
+              }
+            )
+              .then(() => res.status(201).json({ message: " " }))
+              .catch((error) => res.status(400).json({ error }));
+          } else if (sauce.usersDisliked.includes(req.body.userId)) {
+            //si l'id de l'utilisateur se trouve dans usersdisliked
+            /*Retire le dislike et l'user id du tableau usersDisliked */
+            Sauce.updateOne(
+              { _id: req.params.id },
+              {
+                $inc: { dislikes: -1 },
+                $pull: { usersDisliked: req.body.userId },
+                _id: req.params.id,
+              }
+            )
+              .then(() => res.status(201).json({ message: " " }))
+              .catch((error) => res.status(400).json({ error }));
+          }
+          break;
+        default:
+          throw {
+            error:
+              " Le serveur a rencontré un problème, veuillez réessayer plus tard !",
+          };
+      }
+    })
+    .catch((error) => res.status(500).json({ error }));
+};
+
 /* 
 const Thing = require('../models/thing');
 const fs = require('fs');
