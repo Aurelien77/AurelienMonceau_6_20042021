@@ -1,16 +1,29 @@
 const bcrypt = require("bcrypt"); //cryptage MDP
 const User = require("../models/User"); //Modèle pour communiquer avec la DB
 const jwt = require("jsonwebtoken"); //securité token *
+const cryptojs = require("crypto-js");
+/* const dotenv = require("dotenv");
+const result = dotenv.config(); */
+
+//chiffré email avant de l'envoyer dans la BD
 
 exports.signup = (req, res, next) => {
   //fonction
+  //crypter l'email avant de l'envoyer dans la BD
+  /*  const emailCryptoJs = cryptojs
+    .HmacSHA256(req.body.email, `${process.env.CRYPTOJS_EMAIL}`)
+    .toString();
+  console.log(emailCryptoJs); */
+  const emailCryptoJs = cryptojs
+    .HmacSHA256(req.body.email, "CLE_SECRETE")
+    .toString();
   bcrypt
     .hash(req.body.password, 10) //requête envoyé dans le body grâce à bodyparser du mdp
     .then((hash) => {
       const user = new User({
         //new User = shéma définit dans mangoose pour envoi des données vers la BD
         //transite de façon hashé
-        email: req.body.email,
+        email: emailCryptoJs,
 
         password: hash,
       });
