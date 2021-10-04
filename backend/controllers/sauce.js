@@ -3,7 +3,7 @@ const Sauce = require("../models/Sauce");
 const fs = require("fs"); // ???
 
 exports.createSauce = (req, res, next) => {
-  const sauceObject = JSON.parse(req.body.sauce);
+  const sauceObject = JSON.parse(req.body.sauce); // ce qui à été posté
   delete sauceObject._id;
   const sauce = new Sauce({
     //l'on se base sur le modèle
@@ -34,7 +34,7 @@ exports.modifySauce = (req, res, next) => {
     //l'on se base sur le modèle
     ...req.body,
   });
-  Sauce.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
+  Sauce.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id }) //il cherche dans la base de donnée la sauce qui à cet ID pour mettre à jours
     .then(() =>
       res.status(201).json({ message: " Votre sauce à été modifiée !" })
     )

@@ -1,15 +1,17 @@
 const bcrypt = require("bcrypt"); //cryptage MDP
 const User = require("../models/User"); //Modèle pour communiquer avec la DB
 const jwt = require("jsonwebtoken"); //securité token *
+
 exports.signup = (req, res, next) => {
   //fonction
   bcrypt
     .hash(req.body.password, 10) //requête envoyé dans le body grâce à bodyparser du mdp
     .then((hash) => {
       const user = new User({
-        //new User = shéma définit pour envoi des données vers la BD
+        //new User = shéma définit dans mangoose pour envoi des données vers la BD
         //transite de façon hashé
         email: req.body.email,
+
         password: hash,
       });
       user
@@ -21,7 +23,7 @@ exports.signup = (req, res, next) => {
 };
 exports.login = (req, res, next) => {
   //requête envoyé dans le body grâce à bodyparser
-  User.findOne({ email: req.body.email }) //si il ne trouve pas affiche un message ou bien s'y il trouve il renvoie un token de connexion qui dur 24h / token généré par le framwork express +  const JWT *
+  User.findOne({ email: req.body.email }) //si il ne trouve pas l'utilisateur envoyer dans le corp de la requête dans la bd  affiche un message ou bien s'y il trouve il renvoie un token de connexion qui dur 24h / token généré par le framwork express +  const JWT *
     .then((user) => {
       if (!user) {
         return res.status(401).json({ error: "Utilisateur non trouvé !" });

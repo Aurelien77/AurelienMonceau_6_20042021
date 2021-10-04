@@ -1,5 +1,6 @@
-const http = require("http");
-const app = require("./app"); // pour server express
+const http = require("http"); //on import le package http qui permet de créer un server
+const dotenv = require("dotenv").config();
+const app = require("./app"); // Server express
 
 const normalizePort = (val) => {
   const port = parseInt(val, 10);
@@ -12,7 +13,7 @@ const normalizePort = (val) => {
   }
   return false;
 };
-const port = normalizePort(process.env.PORT || "3000");
+const port = normalizePort(process.env.PORT || "3000"); // On set le port
 app.set("port", port);
 
 const errorHandler = (error) => {
@@ -36,10 +37,11 @@ const errorHandler = (error) => {
   }
 };
 
-const server = http.createServer(app); // server utilise framwork express
+const server = http.createServer(app); // Méthode créate server du package htpp / + framwork express
 
 server.on("error", errorHandler);
 server.on("listening", () => {
+  //Le server écoute le protocol http sur le port définit
   const address = server.address();
   const bind = typeof address === "string" ? "pipe " + address : "port " + port;
   console.log("Listening on " + bind);
