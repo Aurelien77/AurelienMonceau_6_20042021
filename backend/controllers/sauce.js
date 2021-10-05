@@ -6,8 +6,8 @@ exports.createSauce = (req, res, next) => {
   const sauceObject = JSON.parse(req.body.sauce); // ce qui à été posté
   delete sauceObject._id;
   const sauce = new Sauce({
-    //l'on se base sur le modèle
-    ...sauceObject, // trois points ?
+    //l'on se base sur le modèle Sauce.js implémenté avec Mongoose
+    ...sauceObject, // Opérateur spread déploit l'ensemble du tableau de la class
     imageUrl: `${req.protocol}://${req.get("host")}/images/${
       // les images
       req.file.filename
