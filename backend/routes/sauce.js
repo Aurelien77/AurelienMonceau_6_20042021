@@ -13,22 +13,3 @@ router.put("/:id", auth, multer, sauceCtrl.modifySauce); //endpoint
 router.delete("/:id", auth, sauceCtrl.deleteSauce); //endpoint
 
 module.exports = router;
-
-/* const express = require('express');
-const router = express.Router();
-
-const auth = require('../middleware/auth');
-const multer = require('../middleware/multer-config');
-
-const stuffCtrl = require('../controllers/stuff');
-router.post('/', auth, multer, stuffCtrl.createThing);
-router.put('/:id', auth, multer, stuffCtrl.modifyThing);
-router.delete('/:id', auth, stuffCtrl.deleteThing);
-router.get('/:id', auth, stuffCtrl.getOneThing);
-router.get('/', auth, stuffCtrl.getAllStuff);
-
-
-
-
-
-module.exports = router; */

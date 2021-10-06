@@ -1,4 +1,3 @@
-const dotenv = require("dotenv").config();
 const express = require("express"); //constante qui appelle le firmware node "Express"
 const bodyParser = require("body-parser"); //constante qui appelle Bodyparser / paquet npm Node
 const mongoose = require("mongoose"); //constante firmware mongoose / Mango DB
@@ -9,19 +8,17 @@ const helmet = require("helmet");
 const app = express(); //express
 mongoose
 
-  .connect(
-    /*  "mongodb+srv://Aurelien:Bateau01@cluster0.cjsqv.mongodb.net/Openclassroom?retryWrites=true&w=majority", */
-    /* "mongodb+srv://Aurelien:Bateau01@cluster0.4ig74.mongodb.net/Openclassroom?retryWrites=true&w=majority", */
-    process.env.SECRET_DB,
-    { useNewUrlParser: true, useUnifiedTopology: true }
-  )
+  .connect(process.env.SECRET_DB, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => console.log("Connexion à MongoDB reussie !"))
   .catch(() => console.log("Connexion à MongoDB echouee !")); // Connexion à MangoDB
 
 app.use((req, res, next) => {
-  // toutes les connexions de l'application express / const app + fonction use express
-  //Contrôle de sécurité autorisant les connexions
-  res.setHeader("Access-Control-Allow-Origin", "*"); //est empaqueté dans le Header proto HTTP les paramètres de sécurité
+  // toutes les connexions de l'application express
+  // + Contrôle de sécurité autorisant les connexions
+  res.setHeader("Access-Control-Allow-Origin", "*"); //est empaqueté dans le Header du proto HTTP les paramètres de sécurités
   res.setHeader(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization"
